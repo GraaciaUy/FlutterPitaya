@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pitayaclinic/aboutUs.dart';
 import 'package:pitayaclinic/login.dart';
 import 'package:pitayaclinic/register.dart';
+import 'package:pitayaclinic/uploadImage.dart';
+//import 'package:pitayaclinic/UploadImage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +21,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(), // Proceed register
+      // page
+      home: const UploadImagePage(), // Proceed register
     );
   }
 }
@@ -89,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     print(email.text);
                     print(password.text);
                   },
-                  child: const Text('Login'),
+                  child: const Text('Lets Login'),
                 ),
               ),
               const Text('Not yet registered?', style: TextStyle(fontSize: 16)),
