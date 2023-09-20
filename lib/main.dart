@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 print(email.text);
                 print(password.text);
               },
-              child: const Text('Login'),
+              child: const Text('Logins'),
             ),
               )
             ]),
