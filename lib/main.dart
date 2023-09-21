@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pitayaclinic/aboutUs.dart';
 import 'package:pitayaclinic/login.dart';
 import 'package:pitayaclinic/register.dart';
+import 'package:pitayaclinic/settings.dart';
 import 'package:pitayaclinic/uploadImage.dart';
 //import 'package:pitayaclinic/UploadImage.dart';
 
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // page
-      home: const UploadImagePage(), // Proceed register
+      home: const MyHomePage(), // Proceed register
     );
   }
 }
@@ -68,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
             key: formKey,
             child: Column(children: [
               const Image(image: AssetImage('asset/PitayaLogo.png')),
-              const Text('Login Page', style: TextStyle(fontSize: 40)),
               TextField(
                 controller: email,
                 decoration: const InputDecoration(
@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(
-                height: 45,
+                height: 40,
                 width: 150,
                 child: ElevatedButton(
                   style: style,
@@ -93,23 +93,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     print(email.text);
                     print(password.text);
                   },
-                  child: const Text('Lets Login'),
+                  child: const Text('Login'),
                 ),
               ),
-              const Text('Not yet registered?', style: TextStyle(fontSize: 16)),
+              const Text('Dont have an account?',
+                  style: TextStyle(fontSize: 16)),
               SizedBox(
-                height: 45,
-                width: 150,
+                height: 40,
+                width: 1,
                 child: ElevatedButton(
                   style: style,
                   onPressed: () {},
-                  child: const Text('Register'),
+                  child: const Text('Create Account'),
                 ),
               ),
               const Text('Continue without an account?',
                   style: TextStyle(fontSize: 16)),
               SizedBox(
-                height: 45,
+                height: 40,
                 width: 150,
                 child: ElevatedButton(
                   style: style,

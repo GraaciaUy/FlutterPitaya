@@ -11,9 +11,9 @@ class _registerPageState extends State<registerPage> {
   get formKey => null;
 
   get style => null;
-  
+
   get email => null;
-  
+
   get password => null;
 
   @override
@@ -26,30 +26,30 @@ class _registerPageState extends State<registerPage> {
                 //connect
                 key: formKey,
                 child: Column(children: [
+                  const Image(image: AssetImage('asset/RegisterText.png')),
                   const Image(image: AssetImage('asset/PitayaWelcome.png')),
-                  const Text('Register Page', style: TextStyle(fontSize: 40)),
                   TextField(
-                controller: email,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Email',
-                ),
-              ),
-              TextField(
-                controller: password,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Password',
-                ),
-              ),
-              TextField(
-                controller: password,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Confirm Password',
-                ),
-              ),
+                    controller: email,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Email',
+                    ),
+                  ),
+                  TextField(
+                    controller: password,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Password',
+                    ),
+                  ),
+                  TextField(
+                    controller: password,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Confirm Password',
+                    ),
+                  ),
                   SizedBox(
                     height: 45,
                     width: 150,
@@ -59,16 +59,17 @@ class _registerPageState extends State<registerPage> {
                       child: const Text('Register'),
                     ),
                   ),
-                  const Text('Already have an account?', style: TextStyle(fontSize: 16)),
+                  const Text('Already have an account?',
+                      style: TextStyle(fontSize: 16)),
                   SizedBox(
-                height: 45,
-                width: 150,
-                child: ElevatedButton(
-                  style: style,
-                  onPressed: () {},
-                  child: const Text('Login'),
-                ),
-              ),
+                    height: 45,
+                    width: 150,
+                    child: ElevatedButton(
+                      style: style,
+                      onPressed: () {},
+                      child: const Text('Login'),
+                    ),
+                  ),
                 ]))));
   }
 }
