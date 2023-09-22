@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "924699162795",
+    "project_id": "pitaya-clinic",
+    "storage_bucket": "pitaya-clinic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924699162795:android:d7c936e18b8e6199aa9fee",
+        "android_client_info": {
+          "package_name": "com.pitayaclinic.pitaya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJOF30fi3waVfrrwACw26AC5bhCyGSfaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
