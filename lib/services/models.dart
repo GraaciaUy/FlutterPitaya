@@ -14,3 +14,21 @@ class UserData {
       required this.email,
       required this.userCreated});
 }
+
+class Descriptions {
+  String howtoidentify;
+  String cause;
+  String whyandwhereoccurs;
+  String howtomanage;
+  String name;
+  Timestamp lastupdate;
+
+  Descriptions({
+    required this.howtoidentify,
+    required this.cause,
+    required this.whyandwhereoccurs,
+    required this.howtomanage,
+    required this.name,
+    required this.lastupdate,
+  });
+}
