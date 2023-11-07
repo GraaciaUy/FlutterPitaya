@@ -16,6 +16,7 @@ class UserData {
 }
 
 class Descriptions {
+  String uid;
   String howtoidentify;
   String cause;
   String whyandwhereoccurs;
@@ -27,6 +28,7 @@ class Descriptions {
   Timestamp lastupdate;
 
   Descriptions({
+    required this.uid,
     required this.howtoidentify,
     required this.cause,
     required this.category,

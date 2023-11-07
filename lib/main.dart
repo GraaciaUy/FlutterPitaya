@@ -9,15 +9,23 @@ import 'package:pitayaclinic/services/databaseService.dart';
 import 'package:pitayaclinic/services/models.dart';
 import 'package:pitayaclinic/services/route.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 //import 'package:pitayaclinic/UploadImage.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   bool useem = false;
 
   await Firebase.initializeApp();
+
+  // Enable offline persistence for Firestore
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
 
   if (useem) {
     // [Firestore | 10.0.2.2:8080]
@@ -35,6 +43,8 @@ void main() async {
   }
 
   runApp(const MyApp());
+
+  FlutterNativeSplash.remove();
 }
 
 // https://transfer.sh/DNd973rJTw/dragonf%20%2897%29.jpg

@@ -39,6 +39,12 @@ dependencies:
   path_provider: ^2.1.1
   path: ^1.8.3
   image_picker: ^1.0.4
+  flutter_native_splash: ^2.3.5
+  flutter_launcher_icons: ^0.13.1
+  cached_network_image: ^3.3.0
+  
+  
+  
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,6 +54,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+ 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -80,6 +87,9 @@ flutter:
      - asset/PitayaPestText.png 
      - asset/PitayaDiseasesText.png 
      - asset/ml/rencelv1.tflite
+     - asset/ml/drgn2.tflite
+     - asset/ml/model1.tflite
+     - asset/ml/model2.tflite
 
 
 

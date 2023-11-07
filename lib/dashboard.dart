@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     size: 20,
                   ),
                 ),
-                label: 'Serttings',
+                label: 'Settings',
               ),
             ],
             onTap: _onItemTapped,
@@ -178,7 +179,10 @@ class _Home extends State<Home> {
                             )),
                   ));
         },
-        child: const Icon(Icons.camera),
+        child: const Image(
+          image: AssetImage(
+              'asset/UploadPhoto.png'), // Replace with your image path
+        ),
       ),
     );
   }
@@ -229,7 +233,7 @@ class _DetectionPage extends State<DetectionPage> {
   _startDetection() async {
     inputImage = InputImage.fromFilePath(widget.thisImage);
 
-    final modelPath = await getModelPath('asset/ml/rencelv1.tflite');
+    final modelPath = await getModelPath('asset/ml/model1.tflite');
     final options = LocalObjectDetectorOptions(
       mode: DetectionMode.single,
       modelPath: modelPath,
@@ -257,54 +261,88 @@ class _DetectionPage extends State<DetectionPage> {
   Widget build(BuildContext context) {
     final firebaseuser = FirebaseAuth.instance.currentUser;
 
+    back() {
+      Navigator.pop(context);
+    }
+
     return Scaffold(
-      body: MultiProvider(
-        providers: [
-          StreamProvider<List<Descriptions>>.value(
-            value: DatabaseService(
-              uid: firebaseuser!.uid,
-            ).alldescriptions,
-            initialData: [],
-          ),
-        ],
-        child: SingleChildScrollView(
-          child: Container(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: isDetecting
-                  ? const Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          height: 32,
-                        ),
-                        Text('Loading Predictions')
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Prediction Result'),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
+      body: SingleChildScrollView(
+        child: Container(
+          height: 1000,
+          child: MultiProvider(
+            providers: [
+              StreamProvider<List<Descriptions>>.value(
+                value: DatabaseService(
+                  uid: firebaseuser!.uid,
+                ).alldescriptions,
+                initialData: [],
+              ),
+            ],
+            child: Container(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: isDetecting
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(
+                            height: 32,
                           ),
-                          width: MediaQuery.of(context).size.width,
-                          height: 250,
-                          child: Image.file(File(widget.thisImage)),
-                        ),
-                        DetectionPageInner(
-                          detected: detectedObjectLabel,
-                          uid: firebaseuser.uid,
-                          imgpath: widget.thisImage,
-                        ),
-                        // Text(detectedObjectLabel)
-                      ],
-                    )),
+                          Text('Loading Predictions'),
+                          const SizedBox(
+                            height: 32,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Re-run Prediction')),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          const Text('Prediction taking too long?')
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(Icons.arrow_back)),
+                              SizedBox(
+                                width: 24,
+                              ),
+                              Text('Prediction Result',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 32)),
+                            ],
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 250,
+                            child: Image.file(File(widget.thisImage)),
+                          ),
+                          DetectionPageInner(
+                            detected: detectedObjectLabel,
+                            uid: firebaseuser.uid,
+                            imgpath: widget.thisImage,
+                          ),
+                          // Text(detectedObjectLabel)
+                        ],
+                      )),
+          ),
         ),
       ),
     );
@@ -629,11 +667,13 @@ class _DiseaseCardsRow extends State<DiseaseCardsRow> {
                 },
                 child: Container(
                   height: 250,
-                  width: 200,
+                  width: 130,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: NetworkImage(widget.descriptions[index].photo),
+                      image: CachedNetworkImageProvider(widget
+                          .descriptions[index]
+                          .photo), // Use CachedNetworkImageProvider
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -641,17 +681,19 @@ class _DiseaseCardsRow extends State<DiseaseCardsRow> {
                     height: 250,
                     width: 200,
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16)),
-                        gradient: LinearGradient(
-                          begin: Alignment.center,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color.fromARGB(0, 144, 238, 144),
-                            Color.fromARGB(255, 144, 238, 144),
-                          ],
-                        )),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(0, 144, 238, 144),
+                          Color.fromARGB(255, 144, 238, 144),
+                        ],
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -661,10 +703,11 @@ class _DiseaseCardsRow extends State<DiseaseCardsRow> {
                           Text(
                             widget.descriptions[index].uiname,
                             style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                              fontFamily: 'Inter',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -723,11 +766,13 @@ class _PestCardsRow extends State<PestCardsRow> {
                 },
                 child: Container(
                   height: 250,
-                  width: 200,
+                  width: 130,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     image: DecorationImage(
-                      image: NetworkImage(widget.descriptions[index].photo),
+                      image: CachedNetworkImageProvider(widget
+                          .descriptions[index]
+                          .photo), // Use CachedNetworkImageProvider
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -735,17 +780,19 @@ class _PestCardsRow extends State<PestCardsRow> {
                     height: 250,
                     width: 200,
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(16)),
-                        gradient: LinearGradient(
-                          begin: Alignment.center,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color.fromARGB(0, 144, 238, 144),
-                            Color.fromARGB(255, 144, 238, 144),
-                          ],
-                        )),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                      gradient: LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(0, 144, 238, 144),
+                          Color.fromARGB(255, 144, 238, 144),
+                        ],
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -755,10 +802,11 @@ class _PestCardsRow extends State<PestCardsRow> {
                           Text(
                             widget.descriptions[index].uiname,
                             style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                              fontFamily: 'Inter',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
@@ -826,7 +874,8 @@ class _PreviewCategory extends State<PreviewCategory> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                    image: NetworkImage(widget.desc.photo),
+                    image: CachedNetworkImageProvider(
+                        widget.desc.photo), // Use CachedNetworkImageProvider
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -1062,13 +1111,10 @@ class _ResultsInner extends State<ResultsInner> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 64,
-                                    height: 64,
-                                    child: Image.network(
-                                      resultsData[index].photo,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                                      width: 64,
+                                      height: 64,
+                                      child: CachedNetworkImage(
+                                          imageUrl: resultsData[index].photo)),
                                   const SizedBox(
                                     width: 32,
                                   ),
@@ -1139,7 +1185,8 @@ class _PreviewResult extends State<PreviewResult> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: DecorationImage(
-                    image: NetworkImage(widget.res.photo),
+                    image: CachedNetworkImageProvider(
+                        widget.res.photo), // Use CachedNetworkImageProvider
                     fit: BoxFit.cover,
                   ),
                 ),

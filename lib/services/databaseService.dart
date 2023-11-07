@@ -48,6 +48,7 @@ class DatabaseService {
 
   Descriptions _getDescription(DocumentSnapshot snapshot) {
     return Descriptions(
+      uid: snapshot['uid'] ?? '',
       howtoidentify: snapshot['howtoidentify'] ?? '',
       cause: snapshot['cause'] ?? '',
       category: snapshot['category'] ?? '',
@@ -76,6 +77,7 @@ class DatabaseService {
         whyandwhereoccurs: document.get('whyandwhereoccurs'),
         howtomanage: document.get('howtomanage'),
         lastupdate: document.get('lastupdate'),
+        uid: document.get('uid'),
       );
     }).toList();
   }
