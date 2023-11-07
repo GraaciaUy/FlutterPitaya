@@ -16,16 +16,19 @@ class _AboutUsPageState extends State<AboutUsPage> {
   // ignore: prefer_const_constructors
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF90EE90),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
             child: Form(
                 //connect
                 key: formKey,
                 child: const Column(children: [
+                  SizedBox(height: 30),
                   Image(image: AssetImage('asset/AboutUsText.png')),
+                  SizedBox(height: 18),
                   Text(
                       'Pitaya Clinic is an interactive tool for farmers who want to learn and diagnose the different diseases, pests and other problems that occur in the Pitaya plant.',
                       style: TextStyle(fontSize: 20)),
+                  SizedBox(height: 18),
                   Text(
                       'We created this application as part of our thesis. This interactive tool allows the users to diagnose or at determine of the possible problems occuring in the dragon fruit plant.',
                       style: TextStyle(fontSize: 20)),

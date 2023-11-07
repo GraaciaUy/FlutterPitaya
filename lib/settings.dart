@@ -47,11 +47,11 @@ class _SettingsPageState extends State<SettingsPage> {
               InkWell(
                 onTap: () {
                   context.read<AuthService>().signout().then(
-                      (value) => Navigator.pushNamed(context, '/mainauth'));
+                      (value) => Navigator.pushNamed(context, '/aboutus'));
                 },
                 child:
                     buildTextWithBorder('LOG OUT'), // Border around "LOG OUT"
-              )
+              ),
             ],
           ),
         ),
